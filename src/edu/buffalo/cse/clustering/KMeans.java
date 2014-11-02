@@ -33,6 +33,20 @@ public class KMeans {
 			}
 		}
 		
+		float[][] distanceMatrix = new float[m][m];
+		for (int i = 0; i < m; i++)
+		{
+			for (int j = i+1; j < m-1; j++)
+			{
+				float distance = 0f;
+				if(i != j)
+					for (int l = 0; l < n-2; l++)
+						distance += Math.pow(genes[i][l+2] - genes[j][l+2], 2);
+				distanceMatrix[i][j] = distance;
+				distanceMatrix[j][i] = distance;
+			}
+		}
+		
 		float[][] means = new float[k][n-2];
 		
 		for (int i = 0; i < k; i++)
@@ -95,7 +109,7 @@ public class KMeans {
 		for (int i = 0; i < m - 1; i++)
 			for (int j = i + 1; j < m; j++)
 			{
-				if (genes[i][n] == genes[j][n] && genes[i][1] == genes[j][1])
+				if (genes[i][n] == genes[j][n] && genes[i][1] == genes[j][1] && genes[i][1]!= -1)
 					num += 1;
 				else if (!(genes[i][n] != genes[j][n] && genes[i][1] != genes[j][1]))
 					deno +=1;
@@ -104,13 +118,35 @@ public class KMeans {
 					clustering[i][j] = 1;
 					clustering[j][i] = 1;
 				}
-				if (genes[i][1] == genes[j][1])
+				if (genes[i][1] == genes[j][1] && genes[i][1]!= -1)
 				{
 					groundTruth[i][j] = 1;
 					groundTruth[j][i] = 1;
 				}
 			}
 		System.out.println((float)num/(num + deno));
+		
+		//Correlation
+		float d =0f, c = 0f;
+		for (int i = 0; i < m; i++)
+			for (int j = 0; j < m; j++) {
+				d += distanceMatrix[i][j];
+				c += clustering[i][j];
+			}
+		
+		d = d/(m*m);
+		c = c/(m*m);
+		float numerator = 0f,d1 = 0f,d2 = 0f;
+		for (int i = 0; i < m; i++)
+			for (int j = 0; j < m; j++) 
+			{
+				numerator += (distanceMatrix[i][j] - d) * (clustering[i][j] - c);
+				d1 += (distanceMatrix[i][j] - d) * (distanceMatrix[i][j] - d);
+				d2 += (clustering[i][j] - c) * (clustering[i][j] - c);
+			}
+		
+		float correlation = numerator/((float)Math.sqrt(d1) * ((float)Math.sqrt(d2)));
+		System.out.println(correlation);
 	}
 
 }
