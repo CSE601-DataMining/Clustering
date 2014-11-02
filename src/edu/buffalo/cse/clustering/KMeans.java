@@ -82,17 +82,34 @@ public class KMeans {
 				}
 			}
 		}
+	
+		
 		
 		//Jaccard coefficient
+	
+		//incidence matrix
+		int[][] clustering = new int[m][m];
+		int[][] groundTruth = new int[m][m];
 		int num = 0;
 		int deno = 0;
 		for (int i = 0; i < m - 1; i++)
 			for (int j = i + 1; j < m; j++)
+			{
 				if (genes[i][n] == genes[j][n] && genes[i][1] == genes[j][1])
 					num += 1;
 				else if (!(genes[i][n] != genes[j][n] && genes[i][1] != genes[j][1]))
 					deno +=1;
-		
+				if (genes[i][n] == genes[j][n])
+				{
+					clustering[i][j] = 1;
+					clustering[j][i] = 1;
+				}
+				if (genes[i][1] == genes[j][1])
+				{
+					groundTruth[i][j] = 1;
+					groundTruth[j][i] = 1;
+				}
+			}
 		System.out.println((float)num/(num + deno));
 	}
 
