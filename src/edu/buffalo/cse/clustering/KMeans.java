@@ -173,7 +173,7 @@ public class KMeans {
 				{
 					current_id = genes[j][n];
 					cluster_ids.add((int)current_id);
-					System.out.println("current id = " + current_id);
+					
 					clusters.add(new ArrayList<double[]>());
 					double[] point = new double[n-2];
 					for (int h = 0; h < n-2; h++)
@@ -189,9 +189,7 @@ public class KMeans {
 				}
 			}
 		}
-		for (int i = 0; i < clusters.size(); i++) {
-			System.out.println(clusters.get(i).size());
-		}
+		
 		
 	}
 
