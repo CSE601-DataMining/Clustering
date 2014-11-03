@@ -3,6 +3,7 @@ package edu.buffalo.cse.clustering;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class KMeans {
 		System.out.println("Enter the file name in data folder");
 		String file = br.readLine();
 		try {
-			data = Files.readAllLines(Paths.get("data/" + file));
+			data = Files.readAllLines(Paths.get("data/" + file), StandardCharsets.UTF_8);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Data file not found");
@@ -198,6 +199,8 @@ public class KMeans {
 		}
 
 		//call pca
+		 Plot plot = new Plot((ArrayList<double[][]>) pca_list);
+		plot.plot();
 		
 	}
 
