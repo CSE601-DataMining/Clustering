@@ -108,37 +108,24 @@ public class dbscan {
                 }
             }
         } 	
-
         System.out.println("Number of clusters formed=" + clusters.size());
 
-        int i=1;
-        for(Cluster clust :clusters)
+		List<double[][]> pca_list = new ArrayList<double[][]>();		
+        
+		for(Cluster clust :clusters)
         {
             List<Point> list=clust.getClusterPoints();
-            File file = new File("DM_data"+i+".txt");
-            try {
-                file.createNewFile();
-
-                FileWriter writer = new FileWriter(file); 
-
-                for(Point p:list)
+			
+            double[][] matrix = new double[list.size()][list.get(0).dimension.length];
+            for(int a=0;a<list.size();a++){
+                for(int b=0;b<list.get(0).dimension.length;b++)
                 {
-                    //                writer.write(p.get_point_id()+"\t"+p.get_ground_truth());
-                    for(double dimension: p.dimension)
-                    {
-                        writer.write("\t"+dimension);
-                    }
-                    writer.write("\n");
+                    matrix[a][b]=list.get(a).dimension[b];
                 }
-                writer.flush();
-                writer.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
-
+            pca_list.add(matrix);
+			
             clust.displayCluster();
-            i++;
         }
         findJaccard(dataPoints);
 
@@ -151,10 +138,6 @@ public class dbscan {
         List<Point> total_points = new ArrayList<Point>();	        
         for(Cluster clust : clusters)
             total_points.addAll(clust.getClusterPoints());
-
-        
-        //		double[][] matrix = new double[total_points.size()][3];
-
     }
 
     public static void findCorrelation(ArrayList<Point> D,List<Cluster> clusters){
