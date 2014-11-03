@@ -1,24 +1,29 @@
 package edu.buffalo.cse.clustering;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Random;
+
 
 
 
 public class KMeans {
-	public static void main(String args[])
+	public static void main(String args[]) throws IOException
 	{
 		List<String> data = null;
-		int k = 5;
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Enter the file name in data folder");
+		String file = br.readLine();
 		try {
-			data = Files.readAllLines(Paths.get("data/cho.txt"));
+			data = Files.readAllLines(Paths.get("data/" + file));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Data file not found");
 			e.printStackTrace();
+			throw e;
 		}
 		int m = data.size();
 		int n = data.get(0).split("\t").length;
@@ -46,16 +51,26 @@ public class KMeans {
 				distanceMatrix[j][i] = distance;
 			}
 		}
-		
+		int k = 5;
+		System.out.println("Enter number of clusters");
+		k = Integer.parseInt(br.readLine());
 		float[][] means = new float[k][n-2];
 		
 		for (int i = 0; i < k; i++)
-			for (int j = 0; j < n-2; j++)
-				means[i][j] = (new Random()).nextFloat()*(9.0f) - 4.5f;
-		
-		boolean converged = false;
-		while (!converged)
 		{
+			System.out.println("Enter id of mean " + (i+1));
+			int id = Integer.parseInt(br.readLine());
+			for (int j = 0; j < n-2; j++)
+				means[i][j] = genes[id - 1][j+2];
+		}
+		
+		System.out.println("Enter max number of iterations");
+		int iterations = Integer.parseInt(br.readLine());
+		boolean converged = false;
+		for(int current_iteration = 0; current_iteration < iterations; current_iteration++)
+		{
+			if (converged)
+				break;
 			converged = true;
 			for (int i = 0; i < m; i++)
 			{

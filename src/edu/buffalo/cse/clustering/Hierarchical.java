@@ -1,6 +1,8 @@
 package edu.buffalo.cse.clustering;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -8,11 +10,14 @@ import java.util.List;
 
 public class Hierarchical {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		List<String> data = null;
-		int k = 5;
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Enter the file name in data folder");
+		String file = br.readLine();
+		
 		try {
-			data = Files.readAllLines(Paths.get("data/cho.txt"));
+			data = Files.readAllLines(Paths.get("data/" + file));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Data file not found");
@@ -61,15 +66,11 @@ public class Hierarchical {
 			}
 		}
 		
-		/*for (int i = 0; i < m; i++)
-		{
-			for (int j = 0; j < m; j++)
-			{
-				System.out.print(distMat.get(i).get(j) + "\t");
-			}
-			System.out.println();
-		}*/
+		
 		int tempM = m;
+		int k = 5;
+		System.out.println("Enter number of clusters");
+		k = Integer.parseInt(br.readLine());
 		while(distMat.size()>k)
 		{
 			int min_i = 0, min_j = 1, min_i_id = (int)(float)distMat.get(0).get(0), min_j_id = (int)(float)distMat.get(1).get(0);
