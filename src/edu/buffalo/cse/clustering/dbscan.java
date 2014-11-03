@@ -141,6 +141,9 @@ public class dbscan {
         List<Point> total_points = new ArrayList<Point>();	        
         for(Cluster clust : clusters)
             total_points.addAll(clust.getClusterPoints());
+        
+        Plot plot = new Plot((ArrayList<double[][]>) pca_list);
+		plot.plot();
     }
 
     public static void findCorrelation(ArrayList<Point> D,List<Cluster> clusters){

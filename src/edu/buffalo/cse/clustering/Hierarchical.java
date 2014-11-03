@@ -3,6 +3,7 @@ package edu.buffalo.cse.clustering;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class Hierarchical {
 		String file = br.readLine();
 		
 		try {
-			data = Files.readAllLines(Paths.get("data/" + file));
+			data = Files.readAllLines(Paths.get("data/" + file),StandardCharsets.UTF_8);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Data file not found");
@@ -184,9 +185,11 @@ public class Hierarchical {
 		    double[][] array= new double[cluster.size()][n-2];
 		    pca_list.add(cluster.toArray(array));
 		}
-		
+		System.out.println("before plot");
 		//call pca
-		
+		 Plot plot = new Plot((ArrayList<double[][]>) pca_list);
+			plot.plot();
+			System.out.println("after plot");
 	}
 
 }

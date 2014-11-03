@@ -21,6 +21,9 @@ public class Plot {
 	
 	public void plot(){
 		for(double[][] matArray : clusterArray){
+			if(matArray.length < 2){
+				continue;
+			}
 			int redDim = 2;
 			PCA pca = new PCA(matArray);
 			AbstractMatrix resMat = pca.getReducedMatrix(redDim);
