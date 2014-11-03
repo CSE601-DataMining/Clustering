@@ -20,6 +20,9 @@ public class dbscan {
         InputStreamReader isr =new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(isr);
 
+		System.out.println("Enter the file name in data folder");
+        String file = br.readLine();
+
         System.out.println("Enter Epsilon");
         double epsilon= Double.parseDouble(br.readLine());
 
@@ -29,7 +32,7 @@ public class dbscan {
 
         List<String> data = new ArrayList<String>();
         try {
-            data = Files.readAllLines(Paths.get("data/cho.txt"),StandardCharsets.UTF_8);
+            data = Files.readAllLines(Paths.get("data/"+file),StandardCharsets.UTF_8);
         } catch (IOException e) {
             System.out.println("Data file not found");
             e.printStackTrace();
