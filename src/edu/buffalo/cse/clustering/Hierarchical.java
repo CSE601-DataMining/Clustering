@@ -106,51 +106,77 @@ public class Hierarchical {
 		//Jaccard coefficient
 		
 			//incidence matrix
-			int[][] clustering = new int[m][m];
-			int[][] groundTruth = new int[m][m];
-			int num = 0;
-			int deno = 0;
-			for (int i = 0; i < m - 1; i++)
-				for (int j = i + 1; j < m; j++)
+		int[][] clustering = new int[m][m];
+		int[][] groundTruth = new int[m][m];
+		int num = 0;
+		int deno = 0;
+		for (int i = 0; i < m - 1; i++)
+			for (int j = i + 1; j < m; j++)
+			{
+				if (genes[i][n] == genes[j][n] && genes[i][1] == genes[j][1] && genes[i][1]!= -1)
+					num += 1;
+				else if (!(genes[i][n] != genes[j][n] && genes[i][1] != genes[j][1]))
+					deno +=1;
+				if (genes[i][n] == genes[j][n])
 				{
-					if (genes[i][n] == genes[j][n] && genes[i][1] == genes[j][1] && genes[i][1]!= -1)
-						num += 1;
-					else if (!(genes[i][n] != genes[j][n] && genes[i][1] != genes[j][1]))
-						deno +=1;
-					if (genes[i][n] == genes[j][n])
-					{
-						clustering[i][j] = 1;
-						clustering[j][i] = 1;
-					}
-					if (genes[i][1] == genes[j][1] && genes[i][1]!= -1)
-					{
-						groundTruth[i][j] = 1;
-						groundTruth[j][i] = 1;
-					}
+					clustering[i][j] = 1;
+					clustering[j][i] = 1;
 				}
-			System.out.println((float)num/(num + deno));
-			
-			//Correlation
-			float d =0f, c = 0f;
-			for (int i = 0; i < m; i++)
-				for (int j = 0; j < m; j++) {
-					d += distanceMatrix[i][j];
-					c += clustering[i][j];
-				}
-			
-			d = d/(m*m);
-			c = c/(m*m);
-			float numerator = 0f,d1 = 0f,d2 = 0f;
-			for (int i = 0; i < m; i++)
-				for (int j = 0; j < m; j++) 
+				if (genes[i][1] == genes[j][1] && genes[i][1]!= -1)
 				{
-					numerator += (distanceMatrix[i][j] - d) * (clustering[i][j] - c);
-					d1 += (distanceMatrix[i][j] - d) * (distanceMatrix[i][j] - d);
-					d2 += (clustering[i][j] - c) * (clustering[i][j] - c);
+					groundTruth[i][j] = 1;
+					groundTruth[j][i] = 1;
 				}
-			
-			float correlation = numerator/((float)Math.sqrt(d1) * ((float)Math.sqrt(d2)));
-			System.out.println(correlation);
+			}
+		System.out.println((float)num/(num + deno));
+		
+		//Correlation
+		float d =0f, c = 0f;
+		for (int i = 0; i < m; i++)
+			for (int j = 0; j < m; j++) {
+				d += distanceMatrix[i][j];
+				c += clustering[i][j];
+			}
+		
+		d = d/(m*m);
+		c = c/(m*m);
+		float numerator = 0f,d1 = 0f,d2 = 0f;
+		for (int i = 0; i < m; i++)
+			for (int j = 0; j < m; j++) 
+			{
+				numerator += (distanceMatrix[i][j] - d) * (clustering[i][j] - c);
+				d1 += (distanceMatrix[i][j] - d) * (distanceMatrix[i][j] - d);
+				d2 += (clustering[i][j] - c) * (clustering[i][j] - c);
+			}
+		
+		float correlation = numerator/((float)Math.sqrt(d1) * ((float)Math.sqrt(d2)));
+		System.out.println(correlation);
+		
+		ArrayList<ArrayList<double[]>> clusters = new ArrayList<ArrayList<double[]>>(k); 
+		ArrayList<Integer> cluster_ids = new ArrayList<Integer>(k);
+		for (int i = 0; i < k; i++) {
+			float current_id = -1.0f;
+			for (int j = 0; j < m; j++) {
+				if ((!cluster_ids.contains((int)genes[j][n])) && current_id == -1.0f)
+				{
+					current_id = genes[j][n];
+					cluster_ids.add((int)current_id);
+					
+					clusters.add(new ArrayList<double[]>());
+					double[] point = new double[n-2];
+					for (int h = 0; h < n-2; h++)
+						point[h] = genes[j][h+2];
+					clusters.get(i).add(point);
+				}
+				else if( genes[j][n] == current_id)
+				{
+					double[] point = new double[n-2];
+					for (int h = 0; h < n-2; h++)
+						point[h] = genes[j][h+2];
+					clusters.get(i).add(point);
+				}
+			}
+		}
 	}
 
 }

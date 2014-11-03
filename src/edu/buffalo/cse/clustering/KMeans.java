@@ -169,14 +169,30 @@ public class KMeans {
 		for (int i = 0; i < k; i++) {
 			float current_id = -1.0f;
 			for (int j = 0; j < m; j++) {
-				if ((!cluster_ids.contains(genes[j][n])) && current_id == -1.0f)
+				if ((!cluster_ids.contains((int)genes[j][n])) && current_id == -1.0f)
 				{
 					current_id = genes[j][n];
-					
-					clusters.add(e)
+					cluster_ids.add((int)current_id);
+					System.out.println("current id = " + current_id);
+					clusters.add(new ArrayList<double[]>());
+					double[] point = new double[n-2];
+					for (int h = 0; h < n-2; h++)
+						point[h] = genes[j][h+2];
+					clusters.get(i).add(point);
+				}
+				else if( genes[j][n] == current_id)
+				{
+					double[] point = new double[n-2];
+					for (int h = 0; h < n-2; h++)
+						point[h] = genes[j][h+2];
+					clusters.get(i).add(point);
 				}
 			}
 		}
+		for (int i = 0; i < clusters.size(); i++) {
+			System.out.println(clusters.get(i).size());
+		}
+		
 	}
 
 }
