@@ -1,4 +1,5 @@
-import java.awt.Dimension;
+package edu.buffalo.cse.clustering;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
@@ -8,9 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class dbscan {
 
@@ -141,6 +140,9 @@ public class dbscan {
             clust.displayCluster();
             i++;
         }
+        findJaccard(dataPoints);
+
+        findCorrelation(dataPoints, clusters);
         System.out.println("*****NOISE CLUSTER*****");
         noise_cluster.displayCluster();
 
@@ -150,15 +152,12 @@ public class dbscan {
         for(Cluster clust : clusters)
             total_points.addAll(clust.getClusterPoints());
 
-        findJaccard(total_points);
-
-        findCorrelation(D, clusters);
+        
         //		double[][] matrix = new double[total_points.size()][3];
 
     }
 
     public static void findCorrelation(ArrayList<Point> D,List<Cluster> clusters){
-
         float[][] distanceMatrix = new float[D.size()][D.size()];
         for (int i = 0; i < D.size(); i++)
         {
@@ -178,8 +177,11 @@ public class dbscan {
         
         for(Cluster clust:clusters)
         {
-            for(int i=0;i<clust.getClusterPoints().size();i++){
-                for(int j=i+1;j<clust.getClusterPoints().size();j++){
+            for(int i=0;i<clust.getClusterPoints().size();i++)
+            {
+            	if (clust.getClusterPoints().get(i).isNoise())
+            		continue;
+                for(int j=0;j<clust.getClusterPoints().size();j++){
                     clustering[clust.getClusterPoints().get(i).get_point_id()-1][clust.getClusterPoints().get(j).get_point_id()-1]=1;
                     clustering[clust.getClusterPoints().get(j).get_point_id()-1][clust.getClusterPoints().get(i).get_point_id()-1]=1;
                 }

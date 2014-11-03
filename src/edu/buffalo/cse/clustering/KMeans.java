@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -139,7 +140,7 @@ public class KMeans {
 					groundTruth[j][i] = 1;
 				}
 			}
-		System.out.println((float)num/(num + deno));
+		System.out.println("Jaccard coefficient: " +(float)num/(num + deno));
 		
 		//Correlation
 		float d =0f, c = 0f;
@@ -161,7 +162,21 @@ public class KMeans {
 			}
 		
 		float correlation = numerator/((float)Math.sqrt(d1) * ((float)Math.sqrt(d2)));
-		System.out.println(correlation);
+		System.out.println("Correlation: " +correlation);
+		
+		ArrayList<ArrayList<double[]>> clusters = new ArrayList<ArrayList<double[]>>(k); 
+		ArrayList<Integer> cluster_ids = new ArrayList<Integer>(k);
+		for (int i = 0; i < k; i++) {
+			float current_id = -1.0f;
+			for (int j = 0; j < m; j++) {
+				if ((!cluster_ids.contains(genes[j][n])) && current_id == -1.0f)
+				{
+					current_id = genes[j][n];
+					
+					clusters.add(e)
+				}
+			}
+		}
 	}
 
 }
