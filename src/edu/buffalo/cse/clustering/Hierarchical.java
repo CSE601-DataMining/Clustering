@@ -177,6 +177,16 @@ public class Hierarchical {
 				}
 			}
 		}
+		
+				        List<double[][]> pca_list = new ArrayList<double[][]>();
+		   
+		for(ArrayList<double[]> cluster:clusters){
+		    double[][] array= new double[cluster.size()][n-2];
+		    pca_list.add(cluster.toArray(array));
+		}
+		
+		//call pca
+		
 	}
 
 }
