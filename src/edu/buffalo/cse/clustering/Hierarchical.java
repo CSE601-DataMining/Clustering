@@ -40,7 +40,7 @@ public class Hierarchical {
 		System.out.println("Should we normalize the data?(y/n)");
 		if(br.readLine().toLowerCase().equals("y"))
 		{
-			for (int i = 0; i < n-2; i++) {
+			for (int i = 2; i < n; i++) {
 				double min = 0d;
 				double max = 0d;
 				for (int j = 0; j < m; j++) {
@@ -106,7 +106,7 @@ public class Hierarchical {
 						minD = distMat.get(i).get(j);
 					
 					}
-			
+			System.out.println(min_i_id + " " + min_j_id);
 			for (int i = 0; i < m; i++) 
 				if (genes[i][n] == (double)min_j_id)
 					genes[i][n] = min_i_id;
@@ -208,7 +208,7 @@ public class Hierarchical {
 		}
 
 		//call pca
-		 Plot plot = new Plot((ArrayList<double[][]>) pca_list);
+		 Plot plot = new Plot((ArrayList<double[][]>) pca_list, "Heirarchical");
 			plot.plot();
 
 	}

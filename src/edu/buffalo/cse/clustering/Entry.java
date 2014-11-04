@@ -23,7 +23,7 @@ public class Entry {
 		clusterArray.add(arr);
 		clusterArray.add(arr1);
 		
-		Plot plot = new Plot(clusterArray);
+		Plot plot = new Plot(clusterArray, "scatter");
 		plot.plot();
 		
 		

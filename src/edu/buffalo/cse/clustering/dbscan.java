@@ -45,12 +45,27 @@ public class dbscan {
             Point point = new Point(data.get(i));
             D.add(point);
         }
+        
+        double[][] matrix = new double[D.size()][D.get(0).dimension.length];
+        int row = 0;
+        for(Point p : D){
+        	double[] dimensions = p.dimension;
+        	for(int i = 0; i < dimensions.length; i++){
+        		matrix[row][i] = dimensions[i];
+        	}
+        	row++;
+        }
+        List<double[][]> pca_list = new ArrayList<double[][]>();
+        pca_list.add(matrix);
+        Plot plot = new Plot((ArrayList<double[][]>) pca_list, "DBSCAN");
+		plot.plot();
+        
         System.out.println("Should we normalize the data?(y/n)");
 		if(br.readLine().toLowerCase().equals("y"))
 		{
 			for (int i = 0; i < D.get(0).dimension.length; i++) {
-				double min = 0d;
-				double max = 0d;
+				double min = 0;
+				double max = 0;
 				for (int j = 0; j < D.size(); j++) {
 					if(D.get(j).dimension[i] > max)
 						max = D.get(j).dimension[i];
@@ -63,6 +78,13 @@ public class dbscan {
 			}
 		}
         System.out.println("Input data processing done");
+        
+//        	for(Point p : D){
+//        		for(int i = 0; i < p.dimension.length; i++){
+//        			System.out.print(p.dimension[i] + "\t");
+//        		}
+//        		System.out.println();
+//        	}
 
         performDbscan(D,epsilon, minpoints); 
 
@@ -158,7 +180,23 @@ public class dbscan {
         for(Cluster clust : clusters)
             total_points.addAll(clust.getClusterPoints());
         
-        Plot plot = new Plot((ArrayList<double[][]>) pca_list);
+        
+        //adding noise to pca
+        List<Point> list=noise_cluster.getClusterPoints();
+		
+        if(list.size() > 0){
+        	double[][] matrix = new double[list.size()][list.get(0).dimension.length];
+            for(int a=0;a<list.size();a++){
+                for(int b=0;b<list.get(0).dimension.length;b++)
+                {
+                    matrix[a][b]=list.get(a).dimension[b];
+                }
+            }
+            pca_list.add(matrix);
+        }
+        
+        
+        Plot plot = new Plot((ArrayList<double[][]>) pca_list, "DBSCAN");
 		plot.plot();
     }
 

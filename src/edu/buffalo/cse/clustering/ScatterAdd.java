@@ -27,7 +27,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 public class ScatterAdd extends JFrame {
 
     private static final int N = 8;
-    private static final String title = "Scatter Add Demo";
+    private static final String title = "Clustering";
     private static final Random rand = new Random();
     private XYSeries added = new XYSeries("Added");
     

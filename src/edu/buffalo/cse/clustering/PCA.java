@@ -44,7 +44,7 @@ public class PCA {
 		return EigenValues;
 	}
 
-//	public static void main(String[] arg) {
+public static void main(String[] arg) {
 //		int redDim = 2;
 //		//construct the matrix X
 ////		double[][] m1 = {{1}, {2}};
@@ -66,6 +66,21 @@ public class PCA {
 //				{15, 32},
 //				{30, 73},
 //				};
+		
+	double[][] arr  = {
+				{-5.1, 9.25},
+				{14.9, 20.25},
+				{5.9, 33.25},
+				{5.9, -30.75},
+				{-9.1, -18.75},
+				{-9.1, -10.75},
+				{-9.1, -21.75},
+				{5.9, 19.25}
+				};
+		
+	PCA pca = new PCA(arr);
+	AbstractMatrix resMat = pca.getReducedMatrix(1);
+	double[][] reducedArray = resMat.getArrayCopy();
 //		
 ////		double[][] arr = {
 ////				{-0.69,	-0.96,	-1.16,	-0.66,	-0.55,	0.12,	-1.07,	-1.22,	0.82,	1.4,	0.71,	0.68,	0.11,	-0.04,	0.19,	0.82},
@@ -98,7 +113,7 @@ public class PCA {
 ////		pca.getValues().toCommandLine("EigenValues");
 ////		pca.getVectors().toCommandLine("EigenVectors");
 ////		pca.covariance.toCommandLine("covariance");
-//	}
+	}
 	
 	public AbstractMatrix getReducedMatrix(int redDim){
 		AbstractMatrix X1 = new org.jmat.data.Matrix(rawData);
