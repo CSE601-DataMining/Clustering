@@ -45,7 +45,23 @@ public class dbscan {
             Point point = new Point(data.get(i));
             D.add(point);
         }
-
+        System.out.println("Should we normalize the data?(y/n)");
+		if(br.readLine().toLowerCase().equals("y"))
+		{
+			for (int i = 0; i < D.get(0).dimension.length; i++) {
+				double min = 0d;
+				double max = 0d;
+				for (int j = 0; j < D.size(); j++) {
+					if(D.get(j).dimension[i] > max)
+						max = D.get(j).dimension[i];
+					if(D.get(j).dimension[i] < min)
+						min = D.get(j).dimension[i];
+				}
+				for (int j = 0; j < D.size(); j++) {
+					D.get(j).dimension[i] = (D.get(j).dimension[i] - min)/(max-min);
+				}
+			}
+		}
         System.out.println("Input data processing done");
 
         performDbscan(D,epsilon, minpoints); 
