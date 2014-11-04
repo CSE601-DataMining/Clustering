@@ -89,7 +89,7 @@ public class Hierarchical {
 		int k = 5;
 		System.out.println("Enter number of clusters");
 		k = Integer.parseInt(br.readLine());
-		while(distMat.size()>k)
+		while(distMat.size()>k + 1)
 		{
 			int min_i = 0, min_j = 1, min_i_id = (int)(double)distMat.get(0).get(0), min_j_id = (int)(double)distMat.get(1).get(0);
 			double minD = distMat.get(0).get(1);
@@ -122,7 +122,9 @@ public class Hierarchical {
 			tempM--;
 		}
 		//Jaccard coefficient
-		
+		for (int i = 0; i < m; i++) {
+			System.out.println(genes[i][0] + " " + genes[i][1] + " " + genes[i][n]);
+		}
 			//incidence matrix
 			int[][] clustering = new int[m][m];
 			int[][] groundTruth = new int[m][m];
