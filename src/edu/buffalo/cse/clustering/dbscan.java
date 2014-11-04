@@ -147,17 +147,17 @@ public class dbscan {
     }
 
     public static void findCorrelation(ArrayList<Point> D,List<Cluster> clusters){
-        float[][] distanceMatrix = new float[D.size()][D.size()];
+        double[][] distanceMatrix = new double[D.size()][D.size()];
         for (int i = 0; i < D.size(); i++)
         {
             for (int j = i+1; j < D.size()-1; j++)
             {
-                float distance = 0f;
+            	double distance = 0d;
                 if(i != j)
                     for (int l = 0; l <D.get(0).dimension.length; l++)
                         distance += Math.pow(D.get(i).dimension[l] - D.get(j).dimension[l], 2);
-                distanceMatrix[i][j] = distance;
-                distanceMatrix[j][i] = distance;
+                distanceMatrix[i][j] = Math.sqrt(distance);
+                distanceMatrix[j][i] = Math.sqrt(distance);
             }
         }
 
@@ -188,7 +188,7 @@ public class dbscan {
 
         d = d/(m*m);
         c = c/(m*m);
-        float numerator = 0f,d1 = 0f,d2 = 0f;
+        double numerator = 0f,d1 = 0f,d2 = 0f;
         for (int i = 0; i < m; i++)
             for (int j = 0; j < m; j++) 
             {
@@ -197,7 +197,7 @@ public class dbscan {
                 d2 += (clustering[i][j] - c) * (clustering[i][j] - c);
             }
 
-        float correlation = numerator/((float)Math.sqrt(d1) * ((float)Math.sqrt(d2)));
+        double correlation = numerator/(Math.sqrt(d1) * (Math.sqrt(d2)));
         System.out.println(correlation);
     }
 
