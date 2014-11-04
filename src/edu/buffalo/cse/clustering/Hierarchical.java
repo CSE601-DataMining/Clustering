@@ -62,7 +62,7 @@ public class Hierarchical {
 		distMat.add(first_tuple);
 		for (int i = 0; i < m; i++) {
 			ArrayList<Double> tuple = new ArrayList<Double>(m);
-			tuple.add((double)i);
+			tuple.add((double)i+1);
 			for (int j = 1; j <= m; j++) {
 				tuple.add(0d);
 			}
@@ -71,7 +71,7 @@ public class Hierarchical {
 		double[][] distanceMatrix = new double[m][m];
 		for (int i = 0; i < m; i++)
 		{
-			for (int j = i+1; j < m-1; j++)
+			for (int j = i+1; j < m; j++)
 			{
 				double distance = 0d;
 				if(i != j)
@@ -89,23 +89,26 @@ public class Hierarchical {
 		int k = 5;
 		System.out.println("Enter number of clusters");
 		k = Integer.parseInt(br.readLine());
-		while(distMat.size()>k + 1)
+		while(distMat.size()>k +1)
 		{
+			
 			int min_i = 0, min_j = 1, min_i_id = (int)(double)distMat.get(0).get(0), min_j_id = (int)(double)distMat.get(1).get(0);
-			double minD = distMat.get(0).get(1);
+			double minD = 100d;
 			
 			for (int i = 1; i < tempM; i++) 
 				for (int j = i+1; j < tempM+1; j++) 
-					if (distMat.get(i).get(j) < minD)
+					if (distMat.get(j).get(i) < minD)
 					{
-						min_i_id = (int)((double)distMat.get(i).get(0));
-						min_j_id = (int)((double)distMat.get(j).get(0));
+						min_i_id = (int)((double)distMat.get(i).get(0))-1;
+						min_j_id = (int)((double)distMat.get(j).get(0))-1;
 						min_i = i;
 						min_j = j;
 						minD = distMat.get(i).get(j);
+					
 					}
+			
 			for (int i = 0; i < m; i++) 
-				if (genes[i][n] == (float)min_j_id)
+				if (genes[i][n] == (double)min_j_id)
 					genes[i][n] = min_i_id;
 			
 			
@@ -121,10 +124,9 @@ public class Hierarchical {
 			distMat.remove(min_j);
 			tempM--;
 		}
+		
 		//Jaccard coefficient
-		for (int i = 0; i < m; i++) {
-			System.out.println(genes[i][0] + " " + genes[i][1] + " " + genes[i][n]);
-		}
+		
 			//incidence matrix
 			int[][] clustering = new int[m][m];
 			int[][] groundTruth = new int[m][m];
