@@ -29,34 +29,34 @@ public class KMeans {
 		}
 		int m = data.size();
 		int n = data.get(0).split("\t").length;
-		float[][] genes = new float[m][n+1];
+		double[][] genes = new double[m][n+1];
 		
 		for (int i = 0; i < m; i++)
 		{
 			String[] tuple = data.get(i).split("\t");
 			for (int j = 0; j < n; j++)
 			{
-				genes[i][j] = Float.parseFloat(tuple[j]);
+				genes[i][j] = Double.parseDouble(tuple[j]);
 			}
 		}
 		
-		float[][] distanceMatrix = new float[m][m];
+		double[][] distanceMatrix = new double[m][m];
 		for (int i = 0; i < m; i++)
 		{
 			for (int j = i+1; j < m-1; j++)
 			{
-				float distance = 0f;
+				double distance = 0f;
 				if(i != j)
 					for (int l = 0; l < n-2; l++)
 						distance += Math.pow(genes[i][l+2] - genes[j][l+2], 2);
-				distanceMatrix[i][j] = distance;
-				distanceMatrix[j][i] = distance;
+				distanceMatrix[i][j] = Math.sqrt(distance);
+				distanceMatrix[j][i] = Math.sqrt(distance);
 			}
 		}
 		int k = 5;
 		System.out.println("Enter number of clusters");
 		k = Integer.parseInt(br.readLine());
-		float[][] means = new float[k][n-2];
+		double[][] means = new double[k][n-2];
 		
 		for (int i = 0; i < k; i++)
 		{
@@ -77,13 +77,13 @@ public class KMeans {
 			for (int i = 0; i < m; i++)
 			{
 				int current_median = (int)genes[i][n];
-				float mind = 0f;
+				double mind = 0f;
 				for (int j = 0; j < n-2; j++)
 					mind += Math.pow(genes[i][j+2] - means[current_median][j], 2);
 				
 				for (int h = 0; h < k; h++)
 				{
-					float current_mind = 0;
+					double current_mind = 0;
 					for (int j = 0; j < n-2; j++)
 						current_mind += Math.pow(genes[i][j+2] - means[h][j], 2);	
 					if (current_mind < mind)
@@ -99,7 +99,7 @@ public class KMeans {
 				for (int j = 0; j < n-2; j++)
 				{
 					int count = 0;
-					float sum = 0f;
+					double sum = 0f;
 					for (int i = 0; i < m; i++)
 					{
 						if (h == (int)genes[i][n])
@@ -123,8 +123,8 @@ public class KMeans {
 		int[][] groundTruth = new int[m][m];
 		int num = 0;
 		int deno = 0;
-		for (int i = 0; i < m - 1; i++)
-			for (int j = i + 1; j < m; j++)
+		for (int i = 0; i < m; i++)
+			for (int j = 0; j <= i; j++)
 			{
 				if (genes[i][n] == genes[j][n] && genes[i][1] == genes[j][1] && genes[i][1]!= -1)
 					num += 1;
@@ -141,10 +141,10 @@ public class KMeans {
 					groundTruth[j][i] = 1;
 				}
 			}
-		System.out.println("Jaccard coefficient: " +(float)num/(num + deno));
+		System.out.println("Jaccard coefficient: " +(double)num/(num + deno));
 		
 		//Correlation
-		float d =0f, c = 0f;
+		double d =0f, c = 0f;
 		for (int i = 0; i < m; i++)
 			for (int j = 0; j < m; j++) {
 				d += distanceMatrix[i][j];
@@ -153,7 +153,7 @@ public class KMeans {
 		
 		d = d/(m*m);
 		c = c/(m*m);
-		float numerator = 0f,d1 = 0f,d2 = 0f;
+		double numerator = 0f,d1 = 0f,d2 = 0f;
 		for (int i = 0; i < m; i++)
 			for (int j = 0; j < m; j++) 
 			{
@@ -162,13 +162,13 @@ public class KMeans {
 				d2 += (clustering[i][j] - c) * (clustering[i][j] - c);
 			}
 		
-		float correlation = numerator/((float)Math.sqrt(d1) * ((float)Math.sqrt(d2)));
+		double correlation = numerator/(Math.sqrt(d1) * (Math.sqrt(d2)));
 		System.out.println("Correlation: " +correlation);
 		
 		ArrayList<ArrayList<double[]>> clusters = new ArrayList<ArrayList<double[]>>(k); 
 		ArrayList<Integer> cluster_ids = new ArrayList<Integer>(k);
 		for (int i = 0; i < k; i++) {
-			float current_id = -1.0f;
+			double current_id = -1.0f;
 			for (int j = 0; j < m; j++) {
 				if ((!cluster_ids.contains((int)genes[j][n])) && current_id == -1.0f)
 				{
@@ -191,7 +191,7 @@ public class KMeans {
 			}
 		}
 		
-		        List<double[][]> pca_list = new ArrayList<double[][]>();
+		List<double[][]> pca_list = new ArrayList<double[][]>();
 		   
 		for(ArrayList<double[]> cluster:clusters){
 		    double[][] array= new double[cluster.size()][n-2];
