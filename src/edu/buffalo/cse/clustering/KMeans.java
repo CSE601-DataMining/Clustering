@@ -39,6 +39,24 @@ public class KMeans {
 				genes[i][j] = Double.parseDouble(tuple[j]);
 			}
 		}
+		System.out.println("Should we normalize the data?(y/n)");
+		if(br.readLine().toLowerCase().equals("y"))
+		{
+			for (int i = 0; i < n-2; i++) {
+				double min = 0d;
+				double max = 0d;
+				for (int j = 0; j < m; j++) {
+					if(genes[j][i] > max)
+						max = genes[j][i];
+					if(genes[j][i] < min)
+						min = genes[j][i];
+				}
+				for (int j = 0; j < m; j++) {
+					genes[j][i] = (genes[j][i] - min)/(max-min);
+				}
+			}
+		}
+		
 		
 		double[][] distanceMatrix = new double[m][m];
 		for (int i = 0; i < m; i++)
